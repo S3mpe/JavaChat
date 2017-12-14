@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+   <h:head>
+      <title>Chat - Login</title>
+   </h:head>
+     <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head> 
+   <h:body>
+       <h3>Chat</h3>
+       <script type="text/javascript">
+            var path = "http://localhost:8080/Chat-Final/rest"
+            function sendMessage(msg) {
+                $.ajax({
+                    url: path,
+                    type: 'POST',
+                    contentType: 'text/plain',
+                    data: window.username +":\t\t"+msg,
+                    success:alert("success"),
+                    error: function(jqXHR) {
+                        console.log("ajax error " + jqXHR.status);
+                    }
+                });               
+           }
+           function recieveMessage(){
+               $.ajax({
+                    url: path,
+                    type: 'GET',
+                    contentType: 'text/plain',
+                    data: window.username +":\t\t"+msg,
+                    success:recieve
+                });
+           }
+       </script>
+       <form action="">
+           <div id="login">
+           Username: <input type="text" id="username" onchange="window.username = this.value"/><input type="button" value="Login" 
+                                                              onclick="document.getElementById('chat').style.display='';
+                                                              document.getElementById('login').style.display='none';
+                                                          document.getElementById('user').innerHTML = window.username"/>
+           </div>
+            <div id="chat" style="display:none;">
+                Welcome <span id="user"></span><br/><br/>
+                <textarea id="chat" style="width:500px; height:250px" value="#{user.messages_recieved}"/>
+
+                 <br></br>
+                 <br></br>
+
+                 <input type="text" id="message" onchange="window.message = this.value"/><input type="button" value="send" onclick="
+                                                                                                sendMessage(document.getElementById('message').innerHTML.value);"/>
+
+            </div>
+       </form>
+   </h:body>
+</html>

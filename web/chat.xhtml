@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+   <h:head>
+      <title>Chat</title>
+   </h:head>
+   <h:body>
+       <p>Welcome, #{user.username}!</p><br/>
+      <h:form>
+          <h:commandButton value="Logout" action="#{user.logout()}"/>
+      </h:form>
+      <h:form>
+      <br/>
+        <table>
+            <tr>
+                <td> 
+                    Online: <h:outputText id="online" value = "#{user.updateOnline()}"/>
+                </td>
+                <td>
+                    <h:commandButton value="Refresh">
+                        <f:ajax execute="#{user.updateOnline()}" render="online"/>
+                        <f:ajax execute="#{user.updateOffline()}" render="offline"/>
+                        <f:ajax execute="#{user.recieveMessage(user.username)}" render="chat"/>
+                        <f:ajax execute="#{user.updateUsers()}" render="menu"/>
+                    </h:commandButton>
+                </td>
+            </tr>
+            <tr>
+                <td> Offline: <h:outputText id="offline" value="#{user.updateOffline()}"/> </td>
+                <td></td>
+            </tr>
+        </table>
+        <br></br>
+        
+        <h:inputTextarea id="chat" style="width:500px; height:250px" value="#{user.messages_recieved}"/>
+        
+        <br></br>
+        <br></br>
+            Delete message: <h:inputText value="#{user.selectedMessage}" />
+            <br/>
+            <h:commandButton value="Delete Message" action="#{user.delete()}" />
+            <br></br>
+            <br></br>
+        <h:inputText value="#{user.msg_send}"/>
+        <h:selectOneMenu id="menu" value="#{user.selectedUser}">
+            <f:selectItems value="#{user.updateUsers()}" />
+        </h:selectOneMenu>
+        <h:commandButton value="Send" action="#{user.sendMessage(user.msg_send, user.username, user.selectedUser)}"/>
+    </h:form>
+   </h:body>
+</html>
