@@ -31,7 +31,7 @@ import javax.ws.rs.core.UriInfo;
  *
  * @author avald
  */
-@Named("chat")
+@Path("chat")
 public class ChatServer {
     protected Message first;
     protected Message last;
@@ -89,10 +89,12 @@ public class ChatServer {
         LOGGER.log(Level.INFO,"IN--------------------------------------------------");
         final UriBuilder base = uriInfo.getBaseUriBuilder();
         Message message = null;
+        first = new Message("first", Long.toString(counter.incrementAndGet()));
         synchronized(messages){
             Message current = messages.get(id);
             if(current == null) message = first;
-            else message = current.next;
+            else message = first;
+            //else message = current.next;
             
             if(message == null) queue(async);
         }
@@ -107,7 +109,7 @@ public class ChatServer {
     protected void send(UriBuilder base, AsyncResponse async, Message message){
         Response response = Response.ok(message.message(), 
                 MediaType.TEXT_PLAIN_TYPE).header("Location", base+"chat?current=" + message.getFrom()).build();
-        async.resume(response);
+        async.resume(null);
     }
     
 }

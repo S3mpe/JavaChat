@@ -12,14 +12,16 @@
    <h:body>
        <h3>Chat</h3>
        <script type="text/javascript">
-            var path = "http://localhost:8080/Chat-Final/rest"
+            var path = "http://localhost:8080/Chat-Final/chat/";
+            var msg ="";
+            var username="";
             function sendMessage(msg) {
                 $.ajax({
                     url: path,
                     type: 'POST',
                     contentType: 'text/plain',
                     data: window.username +":\t\t"+msg,
-                    success:alert("success"),
+                    success:recieveMessage(),
                     error: function(jqXHR) {
                         console.log("ajax error " + jqXHR.status);
                     }
@@ -31,7 +33,9 @@
                     type: 'GET',
                     contentType: 'text/plain',
                     data: window.username +":\t\t"+msg,
-                    success:recieve
+                    success:function(xhr, status, args){
+                        alert(xhr);
+                    }
                 });
            }
        </script>
@@ -49,8 +53,8 @@
                  <br></br>
                  <br></br>
 
-                 <input type="text" id="message" onchange="window.message = this.value"/><input type="button" value="send" onclick="
-                                                                                                sendMessage(document.getElementById('message').innerHTML.value);"/>
+                 <input type="text" id="message" onchange="msg = this.value"/><input type="button" value="send" onclick="
+                                                                                                sendMessage(msg);"/>
 
             </div>
        </form>
